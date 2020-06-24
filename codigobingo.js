@@ -17,7 +17,7 @@ function comenzar() {
 /* Las funciones "numerosaleatorios", "mezclar" y "pararintervalos" hacen que los números se muevan al azar al presionar el
 botón. Esto se da gracias a un intervalo que se detiene al terminar el sonido */
 function numerosaleatorios() {
-    
+
     let numerorandom = parseInt(Math.random() * 75 + 1);
 
     if (numerorandom >= 1 && numerorandom <= 15) {
@@ -33,14 +33,16 @@ function numerosaleatorios() {
     }
 }
 
-function mezclar(){
+function mezclar() {
+
     intervalo = setInterval(numerosaleatorios, 70);
     sonar();
     boton.disabled = true;
+
 }
 
-function pararintervalos(){
-    clearInterval(intervalo);  
+function pararintervalos() {
+    clearInterval(intervalo);
 }
 
 //Función para el sonido de ruleta. El código corre al terminar el sonido.
@@ -48,7 +50,7 @@ function sonar() {
     audio.play();
     audio.onended = function () {
         pararintervalos();
-        validar();      
+        validar();
     }
 }
 
@@ -57,49 +59,42 @@ function obtenerNumero() {
     numero = parseInt(Math.random() * 75 + 1);
 }
 
-/*Esta función se encarga de validar si el número ya existe en el array. Inicialmente se verifica que el array no tenga más
-de 75 posiciones (el total del bingo) para que no entre en un bucle infinito. Si número generado es nuevo, se salta la 
+/*Esta función se encarga de validar si el número ya existe en el array. Si el número generado es nuevo, se salta la 
 validación y llama a la función "agregar" para hacer push al número en el Array. Si es un número repetido, entra en la 
 condición hasta obtener un número que no exista en el array.*/
 function validar() {
 
-    if (cajon.length >= 75) {
+    obtenerNumero();
+    indice = cajon.indexOf(numero)
 
-        alert("El juego ha terminado.")
-    } else {
+    if (indice > -1) {
 
-        obtenerNumero();
-        indice = cajon.indexOf(numero)
+        existe = true;
+        //Se usa un bucle "do-while" con el fin de que se ejecute la instrucción al menos una vez y pueda validar.
+        do {
+            obtenerNumero();
+            //Se usa la variable "control" para controlar el ingreso al "else if" después de que pase por el "if".
+            let control = false;
+            cajon.forEach(function (item) {
 
-        if (indice > -1) {
+                if (numero == item) {
+                    /*Entra en el if luego de recorrer todo el array con el "forEach", pues detectó que el número generado ya existe. El bucle
+                    continuará ejecutándose hasta encontrar un número nuevo. */
+                    indice = -1;
+                    control = true;
 
-            existe = true;
-            //Se usa un bucle "do-while" con el fin de que se ejecute la instrucción al menos una vez y pueda validar.
-            do {
-                obtenerNumero();
-                //Se usa la variable "control" para controlar el ingreso al "else if" después de que pase por el "if".
-                let control = false;
-                cajon.forEach(function (item) {
+                } else if (numero != item && control == false) {
+                    /*Entrará en el "else if" solo si el número generado es diferente de los números del array y si la variable control es falsa.
+                    La variable "indice" cambia a "-2" para salir del bucle. */
+                    indice = -2;
+                }
+            })
 
-                    if (numero == item) {
-                        /*Entra en el if luego de recorrer todo el array con el "forEach", pues detectó que el número generado ya existe. El bucle
-                        continuará ejecutándose hasta encontrar un número nuevo. */
-                        indice = -1;
-                        control = true;
+        } while (indice == -1);
 
-                    } else if (numero != item && control == false) {
-                        /*Entrará en el "else if" solo si el número generado es diferente de los números del array y si la variable control es falsa.
-                        La variable "indice" cambia a "-2" para salir del bucle. */
-                        indice = -2;
-                    }
-                })
-
-            } while (indice == -1);
-
-            existe = false;
-        }
-        agregar();
+        existe = false;
     }
+    agregar();
 }
 
 //Esta función agrega los números al array mediante un "push". Se llama a la función "colorear" para pintar la tabla.
@@ -122,7 +117,7 @@ function agregar() {
         } else if (numero >= 61 && numero <= 75) {
             elnumero.innerHTML = "O" + numero;
         }
-        
+
         document.getElementById("ding").play();
         colorear(numero);
     }
@@ -148,7 +143,11 @@ function colorear(numero) {
             }
         }
     }
-    boton.disabled = false;
+    if (cajon.length < 75) {
+        boton.disabled = false;
+    } else if (cajon.length == 75) {
+        boton.disabled = true;        
+    }
 }
 
 //Evento que permite cargar el JS luego de cargar el HTML.
