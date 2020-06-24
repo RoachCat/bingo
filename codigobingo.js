@@ -3,7 +3,6 @@ los siguientes números ya están en el array. */
 let numero;
 let indice;
 let boton;
-let entro = false;
 let existe = false;
 cajon = new Array();
 
