@@ -3,7 +3,6 @@ los siguientes números ya están en el array. */
 let numero;
 let indice;
 let boton;
-let existe = false;
 cajon = new Array();
 
 //Esta función se encarga de inicializar todo el código mediante el click al botón.
@@ -68,8 +67,6 @@ function validar() {
     indice = cajon.indexOf(numero)
 
     if (indice > -1) {
-
-        existe = true;
         //Se usa un bucle "do-while" con el fin de que se ejecute la instrucción al menos una vez y pueda validar.
         do {
             obtenerNumero();
@@ -89,10 +86,7 @@ function validar() {
                     indice = -2;
                 }
             })
-
-        } while (indice == -1);
-
-        existe = false;
+        } while (indice == -1);        
     }
     agregar();
 }
@@ -100,11 +94,8 @@ function validar() {
 //Esta función agrega los números al array mediante un "push". Se llama a la función "colorear" para pintar la tabla.
 function agregar() {
 
-    if (existe == false) {
-
         let elnumero = document.getElementById("elnumero")
         cajon.push(numero);
-        entro = true;
 
         if (numero >= 1 && numero <= 15) {
             elnumero.innerHTML = "B" + numero;
@@ -119,9 +110,7 @@ function agregar() {
         }
 
         document.getElementById("ding").play();
-        colorear(numero);
-    }
-    existe = false;
+        colorear(numero); 
 }
 
 //Esta función pinta las casillas de la tabla de acuerdo al número en cuestión. Se guarda la tabla en una variable.
@@ -131,8 +120,9 @@ function colorear(numero) {
 
     let numerotexto = numero.toString();
     /*El número obtenido se convierte a texto para poder ser comparado posteriormente con los números de la tabla.
-    La tabla se recorre con 2 for: el primero recorre las filas; al interior hay otro for que recorre cada celda y, dentro de este,
-    hay un if para comparar si el número en cuestión es el mismo que está leyendo el for. Si es así, se pinta.*/
+    La tabla se recorre con 2 for: el primero recorre las filas; al interior hay otro for que recorre cada celda y, 
+    dentro de este,    hay un if para comparar si el número en cuestión es el mismo que está leyendo el for. Si es así,
+    se pinta.*/
     for (let i = 0, j = cuadricula.rows.length; i < j; i++) {
         for (let k = 0, l = cuadricula.rows[i].cells.length; k < l; k++) {
 
