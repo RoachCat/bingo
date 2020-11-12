@@ -7,7 +7,6 @@ cajon = new Array();
 
 //Esta función se encarga de inicializar todo el código mediante el click al botón.
 function comenzar() {
-
     audio = document.getElementById("miaudio");
     boton = document.getElementById("boton");
     boton.addEventListener("click", mezclar, false);
