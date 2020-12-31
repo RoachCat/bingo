@@ -48,6 +48,10 @@ html{
     box-shadow: black 5px 5px 10px;
 }
 
+#boton:hover{
+    cursor: pointer;
+}
+
 .bingo{
     background-color: rgb(0, 153, 255);
 }
